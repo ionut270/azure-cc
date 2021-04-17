@@ -1,0 +1,23 @@
+{
+  "name": "azure-cc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ionut270/azure-cc.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ionut270/azure-cc/issues"
+  },
+  "homepage": "https://github.com/ionut270/azure-cc#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "nodejs": "0.0.0"
+  }
+}
