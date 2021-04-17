@@ -2,7 +2,7 @@
 require("dotenv").config();
 
 // Import modules & define params
-const port = process.env.PORT ? process.env.PORT : 80
+const port = process.env.PORT ? process.env.PORT : 8080
 const app = require("express")();
 
 // Base app Listener
