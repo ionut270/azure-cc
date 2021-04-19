@@ -1,46 +1,65 @@
 // Initialize .env file
 require("dotenv").config();
-const path = require('path');
 // Import modules & define params
 const port = process.env.PORT ? process.env.PORT : 8080
-const app = require("express")();
-const { metrics } = require('./metrics');
 const { appInsights } = require('./addMetrics');
 
-// Base app Listener
-app.listen(port, (err) => {
-    if (err) console.error(err);
-    else console.log(`App running on port ${port}`);
-})
+require("dotenv").config();
+require("./utils/database");
+
+const http  = require("http");
+const utils = require("./utils/utils");
 
 // Define an object containing the status of the app
-var status = {
-    app: "OK",
-    mongo: null
-}
 
-// App router
-app.get('/', (req, res) => {
+http.createServer((req, res) => {
+    // Metrics & stuff
     appInsights();
-    res.sendFile(path.join(__dirname + '/index.html'));
-})
-app.get('/errorAuth', (req, res) => {
-    res.statusCode = 200;
-    res.redirect("https://noauth.azurewebsites.net");
-    res.end();
-})
 
-app.get('/metrics', (req, res) => {
-    metrics(res);
-})
-
-var mongoClient = require("mongodb").MongoClient;
-mongoClient.connect(process.env.MONGO_CONN_STRING, { useUnifiedTopology: true }, function(err, client) {
-    if (err) {
-        console.log(err);
-        status.mongo = err;
-    } else {
-        status.mongo = "Connected to mongodb !";
+    let body = [];
+    switch (req.method) {
+        case "GET":
+            req = utils.queryParse(req);
+            require('./router/get')(req, res);
+            break;
+        case "POST":
+            body = [];
+            req.on('data', (chunk) => { body.push(chunk) }).on('end', () => {
+                req.body = Buffer.concat(body).toString();
+                req.body ? req.body = JSON.parse(req.body) : null;
+                require('./router/post')(req, res);
+            });
+            break;
+        case "PUT":
+            body = [];
+            req.on('data', (chunk) => { body.push(chunk) }).on('end', () => {
+                req.body = Buffer.concat(body).toString();
+                req.body ? req.body = JSON.parse(req.body) : null;
+                require('./router/put')(req, res);
+            });
+            break;
+        case "DELETE":
+            body = [];
+            req.on('data', (chunk) => { body.push(chunk) }).on('end', () => {
+                req.body = Buffer.concat(body).toString();
+                req.body ? req.body = JSON.parse(req.body) : null;
+                require('./router/delete')(req, res);
+            });
+            break;
+        default:
+            utils.sendErr(res,405,{ err: "Request method not implemented !", data: "Please use GET/POST/PUT/DELETE method only !" })
+            break;
     }
-    client.close();
+}).listen(port, () => {
+    console.log("====================================================================");
+    console.log(' _______  ___   _______  _______        __   __  ______    ___     ');
+    console.log('|       ||   | |       ||       |      |  | |  ||    _ |  |   |    ');
+    console.log('|    _  ||   | |       ||   _   |      |  | |  ||   | ||  |   |    ');
+    console.log('|   |_| ||   | |       ||  | |  |      |  |_|  ||   |_||_ |   |    ');
+    console.log('|    ___||   | |      _||  |_|  | ___  |       ||    __  ||   |___ ');
+    console.log('|   |    |   | |     |_ |       ||   | |       ||   |  | ||       |');
+    console.log('|___|    |___| |_______||_______||___| |_______||___|  |_||_______|');
+    console.log("===================================================================");
+    console.log("");
+    console.log(`~~~ Server running on ${port} ~~~`);
 });

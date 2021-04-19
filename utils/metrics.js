@@ -9,7 +9,7 @@ function metrics(res) {
             },
         })
         .then(response => response.text())
-        .then(result => res.send(result))
+        .then(result => res.end(result))
         .catch(error => console.log('error', error));
 }
 

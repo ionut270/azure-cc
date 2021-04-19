@@ -1,0 +1,24 @@
+body, .main{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+.column{
+    display: flex;
+    flex-flow: column; 
+}
+.checkbox{
+    padding: .5em;
+    width: 290px;
+}
+.small_text{
+    bottom: 1em;
+    position: fixed;
+}
+#response{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
