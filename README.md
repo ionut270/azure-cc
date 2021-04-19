@@ -1,6 +1,7 @@
 # azure-cc
 
 ## Services
+
 1 Active Directory
 2 MFA
 3 Azure cosmos DB       - MongoDB
@@ -8,5 +9,5 @@
 5 App service           - Web host
 6 App service plan      - Vm
 7 Load Balancer         - Networking
-8 Service Bus           - Coms between services
-9 Web static app        - Something 
+8 Service Bus           - Coms between Metrics & database
+9 Web static app        - HomePage 
