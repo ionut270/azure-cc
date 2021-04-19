@@ -24,7 +24,7 @@ module.exports= (req,res)=>{
 
                         db.insertOne({ id:id, pass:pass, url:req.body.url, timeout: timeout, domain: domain },(err)=>{
                             if(err) utils.sendErr(res,500,{ err : "error on db data insertion", data : err})
-                            else { res.statusCode = 200; res.end(JSON.stringify({"url":`${process.env.APP_HOST}/r/${id}`,pass:pass, msg: `The url will expire on ${new Date(timeout)}`})) }
+                            else { res.statusCode = 200; res.end(JSON.stringify({"url":`https://uaic.azurewebsites.net/r/${id}`,pass:pass, msg: `The url will expire on ${new Date(timeout)}`})) }
                         })
                     }
                 })
